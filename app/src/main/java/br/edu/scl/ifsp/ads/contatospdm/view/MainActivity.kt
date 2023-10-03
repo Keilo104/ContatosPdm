@@ -3,12 +3,17 @@ package br.edu.scl.ifsp.ads.contatospdm.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import br.edu.scl.ifsp.ads.contatospdm.R
+import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
@@ -21,13 +26,10 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     private val contactList: MutableList<Contact> = mutableListOf()
 
     // Adapter
-    private val contactAdapter: ArrayAdapter<String> by lazy ***REMOVED***
-        ArrayAdapter(
+    private val contactAdapter: ContactAdapter by lazy ***REMOVED***
+        ContactAdapter(
             this,
-            android.R.layout.simple_list_item_1,
-            contactList.map ***REMOVED*** contact ->
-                contact.name
-    ***REMOVED***
+            contactList
         )
 ***REMOVED***
 
@@ -36,6 +38,8 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     override fun onCreate(savedInstanceState: Bundle?) ***REMOVED***
         super.onCreate(savedInstanceState)
         setContentView(amb.root)
+        setSupportActionBar(amb.toolbarIn.toolbar)
+
         //fillContacts()
         amb.contatosLv.adapter = contactAdapter
 
@@ -45,12 +49,19 @@ class MainActivity : AppCompatActivity() ***REMOVED***
             if (result.resultCode == RESULT_OK) ***REMOVED***
                 val contact = result.data?.getParcelableExtra<Contact>(EXTRA_CONTACT)
                 contact?.let ***REMOVED*** _contact ->
-                    contactList.add(_contact)
-                    contactAdapter.add(_contact.name)
+                    if(contactList.any ***REMOVED*** it.id == contact.id ***REMOVED***) ***REMOVED***
+                        val position = contactList.indexOfFirst ***REMOVED*** it.id == contact.id ***REMOVED***
+                        contactList[position] = _contact
+            ***REMOVED*** else ***REMOVED***
+                        contactList.add(_contact)
+            ***REMOVED***
+
                     contactAdapter.notifyDataSetChanged()
         ***REMOVED***
     ***REMOVED***
 ***REMOVED***
+
+        registerForContextMenu(amb.contatosLv)
 ***REMOVED***
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean ***REMOVED***
@@ -66,6 +77,39 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     ***REMOVED***
             else -> false
 ***REMOVED***
+***REMOVED***
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) ***REMOVED***
+        menuInflater.inflate(R.menu.context_menu_main, menu)
+***REMOVED***
+
+    override fun onContextItemSelected(item: MenuItem): Boolean ***REMOVED***
+        val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
+        return when (item.itemId)***REMOVED***
+            R.id.removeContactMi -> ***REMOVED***
+                contactList.removeAt(position)
+                contactAdapter.notifyDataSetChanged()
+                Toast.makeText(this,"Removido", Toast.LENGTH_SHORT).show()
+                true
+    ***REMOVED***
+            R.id.editContactMo -> ***REMOVED***
+                val contact = contactList[position]
+                val editContactIntent = Intent(this, ContactActivity::class.java)
+                editContactIntent.putExtra(EXTRA_CONTACT, contact)
+                carl.launch(editContactIntent)
+                true
+    ***REMOVED***
+            else -> ***REMOVED***true***REMOVED***
+***REMOVED***
+***REMOVED***
+
+    override fun onDestroy() ***REMOVED***
+        super.onDestroy()
+        unregisterForContextMenu(amb.contatosLv)
 ***REMOVED***
 
     private fun fillContacts() ***REMOVED***
