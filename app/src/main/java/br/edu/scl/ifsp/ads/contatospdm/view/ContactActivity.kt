@@ -58,5 +58,7 @@ class ContactActivity : AppCompatActivity() ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
-    private fun generateId(): Int = Random(System.currentTimeMillis()).nextInt()
+    private fun generateId(): Int***REMOVED***
+        return Random(System.currentTimeMillis()).nextInt()
+***REMOVED***
 ***REMOVED***
