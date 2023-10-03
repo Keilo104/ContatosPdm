@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() ***REMOVED***
         setContentView(amb.root)
         setSupportActionBar(amb.toolbarIn.toolbar)
 
-        fillContacts()
+        //fillContacts()
         amb.contatosLv.adapter = contactAdapter
 
         carl = registerForActivityResult(

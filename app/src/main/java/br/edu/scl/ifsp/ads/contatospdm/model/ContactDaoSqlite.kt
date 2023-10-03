@@ -1,5 +1,6 @@
 package br.edu.scl.ifsp.ads.contatospdm.model
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.database.sqlite.SQLiteDatabase
@@ -41,7 +42,13 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
 ***REMOVED***
 
     override fun createContact(contact: Contact): Int ***REMOVED***
-        TODO("Not yet implemented")
+        val cv = ContentValues()
+        cv.put(NAME_COLUMN, contact.name)
+        cv.put(ADDRESS_COLUMN, contact.address)
+        cv.put(PHONE_COLUMN, contact.phone)
+        cv.put(EMAIL_COLUMN, contact.email)
+
+        return contactSqliteDatabase.insert(CONTACT_TABLE, null, cv).toInt()
 ***REMOVED***
 
     override fun retrieveContact(id: Int): Contact ***REMOVED***
