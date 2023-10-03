@@ -4,7 +4,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    app:titleTextColor="@color/white"
-    app:subtitleTextColor="@color/white"
-    android:background="@color/design_default_color_primary"
+    app:titleTextColor="@color/black"
+    app:subtitleTextColor="@color/black"
+    android:background="@color/pretty"
     />

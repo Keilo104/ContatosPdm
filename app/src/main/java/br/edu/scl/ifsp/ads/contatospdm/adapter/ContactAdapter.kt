@@ -36,8 +36,8 @@ ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) ***REMOVED***
         holder.nameTv.text = contact.name
         holder.emailTv.text = contact.email
 
-        tcb?.nameTv?.setText(contact.name)
-        tcb?.emailTv?.setText(contact.email)
+        tcb?.nameTv?.text = contact.name
+        tcb?.emailTv?.text = contact.email
 
         return contactTileView
 ***REMOVED***

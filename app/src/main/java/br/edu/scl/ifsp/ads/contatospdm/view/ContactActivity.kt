@@ -3,8 +3,10 @@ package br.edu.scl.ifsp.ads.contatospdm.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityContactBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
+import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
 import java.util.Random
 
@@ -22,7 +24,15 @@ class ContactActivity : AppCompatActivity() ***REMOVED***
 
         val receivedContact = intent.getParcelableExtra<Contact>(EXTRA_CONTACT)
         receivedContact?.let ***REMOVED*** _receivedContact ->
+            val viewContact: Boolean = intent.getBooleanExtra(VIEW_CONTACT, false)
             with(acb) ***REMOVED***
+                if(viewContact) ***REMOVED***
+                    nameEt.isEnabled = false
+                    addressEt.isEnabled = false
+                    phoneEt.isEnabled = false
+                    emailEt.isEnabled = false
+                    saveBt.visibility = View.GONE
+        ***REMOVED***
                 nameEt.setText(_receivedContact.name)
                 addressEt.setText(_receivedContact.address)
                 phoneEt.setText(_receivedContact.phone)
@@ -32,7 +42,7 @@ class ContactActivity : AppCompatActivity() ***REMOVED***
 
         with(acb) ***REMOVED***
             saveBt.setOnClickListener ***REMOVED***
-                val contact: Contact = Contact(
+                val contact = Contact(
                     id = receivedContact?.id?:generateId(),
                     name = nameEt.text.toString(),
                     address = addressEt.text.toString(),

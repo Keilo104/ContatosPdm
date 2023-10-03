@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +15,7 @@ import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
+import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
 
 class MainActivity : AppCompatActivity() ***REMOVED***
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() ***REMOVED***
         setContentView(amb.root)
         setSupportActionBar(amb.toolbarIn.toolbar)
 
-        //fillContacts()
+        fillContacts()
         amb.contatosLv.adapter = contactAdapter
 
         carl = registerForActivityResult(
@@ -59,6 +59,15 @@ class MainActivity : AppCompatActivity() ***REMOVED***
                     contactAdapter.notifyDataSetChanged()
         ***REMOVED***
     ***REMOVED***
+***REMOVED***
+
+        amb.contatosLv.setOnItemClickListener ***REMOVED*** parent, view, position, id ->
+            val contact = contactList[position]
+            val viewContactIntent = Intent(this, ContactActivity::class.java)
+                .putExtra(EXTRA_CONTACT, contact)
+                .putExtra(VIEW_CONTACT, true)
+
+            startActivity(viewContactIntent)
 ***REMOVED***
 
         registerForContextMenu(amb.contatosLv)
@@ -120,7 +129,7 @@ class MainActivity : AppCompatActivity() ***REMOVED***
                     "Nome $i",
                     "Endereço $i",
                     "Telefone $i",
-                    "email $i"
+                    "Email $i"
                 )
             )
 ***REMOVED***
