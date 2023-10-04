@@ -6,12 +6,12 @@ plugins ***REMOVED***
 
 android ***REMOVED***
     namespace 'br.edu.scl.ifsp.ads.contatospdm'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig ***REMOVED***
         applicationId "br.edu.scl.ifsp.ads.contatospdm"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 

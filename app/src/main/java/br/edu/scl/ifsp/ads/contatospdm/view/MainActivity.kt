@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
+import br.edu.scl.ifsp.ads.contatospdm.controller.ContactController
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
@@ -23,7 +24,14 @@ class MainActivity : AppCompatActivity() ***REMOVED***
         ActivityMainBinding.inflate(layoutInflater)
 ***REMOVED***
     // Data Source
-    private val contactList: MutableList<Contact> = mutableListOf()
+    private val contactList: MutableList<Contact> by lazy ***REMOVED***
+        contactController.getContacts()
+***REMOVED***
+
+    // Controller
+    private val contactController: ContactController by lazy ***REMOVED***
+        ContactController(this)
+***REMOVED***
 
     // Adapter
     private val contactAdapter: ContactAdapter by lazy ***REMOVED***
@@ -52,10 +60,21 @@ class MainActivity : AppCompatActivity() ***REMOVED***
                     if(contactList.any ***REMOVED*** it.id == contact.id ***REMOVED***) ***REMOVED***
                         val position = contactList.indexOfFirst ***REMOVED*** it.id == contact.id ***REMOVED***
                         contactList[position] = _contact
+                        contactController.editContact(_contact)
             ***REMOVED*** else ***REMOVED***
-                        contactList.add(_contact)
+                        val newId = contactController.insertContact(_contact)
+                        val newContact = Contact (
+                            newId,
+                            _contact.name,
+                            _contact.address,
+                            _contact.phone,
+                            _contact.email
+                        )
+                        contactList.add(newContact)
+
             ***REMOVED***
 
+                    contactList.sortBy ***REMOVED*** it.name ***REMOVED***
                     contactAdapter.notifyDataSetChanged()
         ***REMOVED***
     ***REMOVED***

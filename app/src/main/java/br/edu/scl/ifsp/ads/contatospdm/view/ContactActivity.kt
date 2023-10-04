@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityContactBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
+import br.edu.scl.ifsp.ads.contatospdm.model.Constant.INVALID_CONTACT_ID
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
 import java.util.Random
@@ -43,7 +44,7 @@ class ContactActivity : AppCompatActivity() ***REMOVED***
         with(acb) ***REMOVED***
             saveBt.setOnClickListener ***REMOVED***
                 val contact = Contact(
-                    id = receivedContact?.id?:generateId(),
+                    id = receivedContact?.id?: INVALID_CONTACT_ID,
                     name = nameEt.text.toString(),
                     address = addressEt.text.toString(),
                     phone = phoneEt.text.toString(),
@@ -58,7 +59,9 @@ class ContactActivity : AppCompatActivity() ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
+/* we don't do that here
     private fun generateId(): Int***REMOVED***
         return Random(System.currentTimeMillis()).nextInt()
 ***REMOVED***
+ */
 ***REMOVED***
