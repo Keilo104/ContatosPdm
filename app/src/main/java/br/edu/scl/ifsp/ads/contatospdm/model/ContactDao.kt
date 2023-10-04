@@ -3,7 +3,7 @@ package br.edu.scl.ifsp.ads.contatospdm.model
 interface ContactDao ***REMOVED***
     fun createContact(contact: Contact): Int
 
-    fun retrieveContact(id: Int): Contact
+    fun retrieveContact(id: Int): Contact?
 
     fun retrieveContacts(): MutableList<Contact>
 
