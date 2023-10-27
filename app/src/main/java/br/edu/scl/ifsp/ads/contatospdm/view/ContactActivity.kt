@@ -44,7 +44,7 @@ class ContactActivity : AppCompatActivity() ***REMOVED***
         with(acb) ***REMOVED***
             saveBt.setOnClickListener ***REMOVED***
                 val contact = Contact(
-                    id = receivedContact?.id?: INVALID_CONTACT_ID,
+                    id = receivedContact?.id,
                     name = nameEt.text.toString(),
                     address = addressEt.text.toString(),
                     phone = phoneEt.text.toString(),

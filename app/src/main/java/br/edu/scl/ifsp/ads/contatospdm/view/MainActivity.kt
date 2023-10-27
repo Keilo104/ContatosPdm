@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
 import br.edu.scl.ifsp.ads.contatospdm.controller.ContactController
+import br.edu.scl.ifsp.ads.contatospdm.controller.ContactRoomController
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
@@ -24,13 +25,11 @@ class MainActivity : AppCompatActivity() ***REMOVED***
         ActivityMainBinding.inflate(layoutInflater)
 ***REMOVED***
     // Data Source
-    private val contactList: MutableList<Contact> by lazy ***REMOVED***
-        contactController.getContacts()
-***REMOVED***
+    private val contactList: MutableList<Contact> = mutableListOf()
 
     // Controller
-    private val contactController: ContactController by lazy ***REMOVED***
-        ContactController(this)
+    private val contactController: ContactRoomController by lazy ***REMOVED***
+        ContactRoomController(this)
 ***REMOVED***
 
     // Adapter
@@ -58,24 +57,10 @@ class MainActivity : AppCompatActivity() ***REMOVED***
                 val contact = result.data?.getParcelableExtra<Contact>(EXTRA_CONTACT)
                 contact?.let ***REMOVED*** _contact ->
                     if(contactList.any ***REMOVED*** it.id == contact.id ***REMOVED***) ***REMOVED***
-                        val position = contactList.indexOfFirst ***REMOVED*** it.id == contact.id ***REMOVED***
-                        contactList[position] = _contact
                         contactController.editContact(_contact)
             ***REMOVED*** else ***REMOVED***
-                        val newId = contactController.insertContact(_contact)
-                        val newContact = Contact (
-                            newId,
-                            _contact.name,
-                            _contact.address,
-                            _contact.phone,
-                            _contact.email
-                        )
-                        contactList.add(newContact)
-
+                        contactController.insertContact(_contact)
             ***REMOVED***
-
-                    contactList.sortBy ***REMOVED*** it.name ***REMOVED***
-                    contactAdapter.notifyDataSetChanged()
         ***REMOVED***
     ***REMOVED***
 ***REMOVED***
@@ -90,6 +75,7 @@ class MainActivity : AppCompatActivity() ***REMOVED***
 ***REMOVED***
 
         registerForContextMenu(amb.contatosLv)
+        contactController.getContacts()
 ***REMOVED***
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean ***REMOVED***
@@ -121,9 +107,7 @@ class MainActivity : AppCompatActivity() ***REMOVED***
 
         return when (item.itemId)***REMOVED***
             R.id.removeContactMi -> ***REMOVED***
-                contactController.removeContact(contact.id)
-                contactList.removeAt(position)
-                contactAdapter.notifyDataSetChanged()
+                contactController.removeContact(contact)
                 Toast.makeText(this,"Removido", Toast.LENGTH_SHORT).show()
                 true
     ***REMOVED***
@@ -141,6 +125,12 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     override fun onDestroy() ***REMOVED***
         super.onDestroy()
         unregisterForContextMenu(amb.contatosLv)
+***REMOVED***
+
+    fun updateContactList(_contactList: MutableList<Contact>) ***REMOVED***
+        contactList.clear()
+        contactList.addAll(_contactList)
+        contactAdapter.notifyDataSetChanged()
 ***REMOVED***
 
     private fun fillContacts() ***REMOVED***
