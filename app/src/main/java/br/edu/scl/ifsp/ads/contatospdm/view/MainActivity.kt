@@ -3,6 +3,9 @@ package br.edu.scl.ifsp.ads.contatospdm.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +16,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
-import br.edu.scl.ifsp.ads.contatospdm.controller.ContactController
 import br.edu.scl.ifsp.ads.contatospdm.controller.ContactRoomController
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
@@ -38,6 +40,13 @@ class MainActivity : AppCompatActivity() ***REMOVED***
             this,
             contactList
         )
+***REMOVED***
+
+    // Handler
+    val updateContactListHandler = object: Handler(Looper.getMainLooper()) ***REMOVED***
+        override fun handleMessage(msg: Message) ***REMOVED***
+            super.handleMessage(msg)
+***REMOVED***
 ***REMOVED***
 
     private lateinit var carl: ActivityResultLauncher<Intent>
@@ -65,7 +74,7 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     ***REMOVED***
 ***REMOVED***
 
-        amb.contatosLv.setOnItemClickListener ***REMOVED*** parent, view, position, id ->
+        amb.contatosLv.setOnItemClickListener ***REMOVED*** _, _, position, _ ->
             val contact = contactList[position]
             val viewContactIntent = Intent(this, ContactActivity::class.java)
                 .putExtra(EXTRA_CONTACT, contact)
@@ -112,9 +121,9 @@ class MainActivity : AppCompatActivity() ***REMOVED***
                 true
     ***REMOVED***
             R.id.editContactMo -> ***REMOVED***
-                val contact = contactList[position]
+                val _contact = contactList[position]
                 val editContactIntent = Intent(this, ContactActivity::class.java)
-                editContactIntent.putExtra(EXTRA_CONTACT, contact)
+                editContactIntent.putExtra(EXTRA_CONTACT, _contact)
                 carl.launch(editContactIntent)
                 true
     ***REMOVED***
