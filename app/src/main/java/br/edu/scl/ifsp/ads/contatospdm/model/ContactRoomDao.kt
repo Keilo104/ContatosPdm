@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 
 @Dao
-interface ContactRoomDao ***REMOVED***
+interface ContactRoomDao: ContactDao ***REMOVED***
 
     companion object ***REMOVED***
         const val CONTACT_DATABASE_FILE = "contacts_room"
@@ -17,18 +17,18 @@ interface ContactRoomDao ***REMOVED***
 ***REMOVED***
 
     @Insert
-    fun createContact(contact: Contact)
+    override fun createContact(contact: Contact)
 
     @Query("SELECT * FROM $CONTACT_TABLE WHERE $ID_COLUMN = :id")
-    fun retrieveContact(id: Int): Contact?
+    override fun retrieveContact(id: Int): Contact?
 
     @Query("SELECT * FROM $CONTACT_TABLE ORDER BY $NAME_COLUMN")
-    fun retrieveContacts(): MutableList<Contact>
+    override fun retrieveContacts(): MutableList<Contact>
 
     @Update
-    fun updateContact(contact: Contact): Int
+    override fun updateContact(contact: Contact): Int
 
     @Delete
-    fun deleteContact(contact: Contact): Int
+    override fun deleteContact(contact: Contact): Int
 
 ***REMOVED***

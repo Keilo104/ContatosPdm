@@ -16,8 +16,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import br.edu.scl.ifsp.ads.contatospdm.R
 import br.edu.scl.ifsp.ads.contatospdm.adapter.ContactAdapter
-import br.edu.scl.ifsp.ads.contatospdm.controller.ContactRoomController
+import br.edu.scl.ifsp.ads.contatospdm.controller.ContactController
 import br.edu.scl.ifsp.ads.contatospdm.databinding.ActivityMainBinding
+import br.edu.scl.ifsp.ads.contatospdm.model.Constant.CONTACT_ARRAY
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
@@ -30,8 +31,8 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     private val contactList: MutableList<Contact> = mutableListOf()
 
     // Controller
-    private val contactController: ContactRoomController by lazy ***REMOVED***
-        ContactRoomController(this)
+    private val contactController: ContactController by lazy ***REMOVED***
+        ContactController(this)
 ***REMOVED***
 
     // Adapter
@@ -46,6 +47,13 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     val updateContactListHandler = object: Handler(Looper.getMainLooper()) ***REMOVED***
         override fun handleMessage(msg: Message) ***REMOVED***
             super.handleMessage(msg)
+            msg.data.getParcelableArray(CONTACT_ARRAY)?.also ***REMOVED*** contactArray ->
+                contactList.clear()
+                contactArray.forEach ***REMOVED***
+                    contactList.add(it as Contact)
+        ***REMOVED***
+                contactAdapter.notifyDataSetChanged()
+    ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
@@ -134,12 +142,6 @@ class MainActivity : AppCompatActivity() ***REMOVED***
     override fun onDestroy() ***REMOVED***
         super.onDestroy()
         unregisterForContextMenu(amb.contatosLv)
-***REMOVED***
-
-    fun updateContactList(_contactList: MutableList<Contact>) ***REMOVED***
-        contactList.clear()
-        contactList.addAll(_contactList)
-        contactAdapter.notifyDataSetChanged()
 ***REMOVED***
 
     private fun fillContacts() ***REMOVED***

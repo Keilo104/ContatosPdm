@@ -42,11 +42,13 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
 ***REMOVED***
 ***REMOVED***
 
-    override fun createContact(contact: Contact) = contactSqliteDatabase.insert(
+    override fun createContact(contact: Contact) ***REMOVED***
+        contactSqliteDatabase.insert(
             CONTACT_TABLE,
             null,
             contact.toContentValues()
-        ).toInt()
+        )
+***REMOVED***
 
 
     override fun retrieveContact(id: Int): Contact? ***REMOVED***
@@ -83,10 +85,10 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
         arrayOf(contact.id.toString())
     )
 
-    override fun deleteContact(id: Int): Int = contactSqliteDatabase.delete(
+    override fun deleteContact(contact: Contact): Int = contactSqliteDatabase.delete(
         CONTACT_TABLE,
         "$ID_COLUMN = ?",
-        arrayOf(id.toString())
+        arrayOf(contact.id.toString())
     )
 
     private fun Cursor.rowToContact(): Contact = Contact(
