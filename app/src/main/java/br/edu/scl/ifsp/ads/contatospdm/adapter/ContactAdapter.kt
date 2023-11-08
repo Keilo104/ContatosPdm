@@ -16,11 +16,10 @@ ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) ***REMOVED***
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View ***REMOVED***
         val contact = contactList[position]
-        var tcb: TileContactBinding? = null
 
         var contactTileView = convertView
         if(contactTileView == null) ***REMOVED***
-            tcb = TileContactBinding.inflate(
+            val tcb = TileContactBinding.inflate(
                 context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater,
                 parent,
                 false
@@ -36,9 +35,10 @@ ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) ***REMOVED***
         holder.nameTv.text = contact.name
         holder.emailTv.text = contact.email
 
+        /* old way of doing it
         tcb?.nameTv?.text = contact.name
         tcb?.emailTv?.text = contact.email
-
+         */
         return contactTileView
 ***REMOVED***
 
