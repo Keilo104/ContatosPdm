@@ -1,16 +1,16 @@
-plugins ***REMOVED***
+plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'com.google.devtools.ksp'
     id 'com.google.gms.google-services'
-***REMOVED***
+}
 
-android ***REMOVED***
+android {
     namespace 'br.edu.scl.ifsp.ads.contatospdm'
     compileSdk 34
 
-    defaultConfig ***REMOVED***
+    defaultConfig {
         applicationId "br.edu.scl.ifsp.ads.contatospdm"
         minSdk 23
         targetSdk 34
@@ -18,28 +18,28 @@ android ***REMOVED***
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-***REMOVED***
+    }
 
-    buildTypes ***REMOVED***
-        release ***REMOVED***
+    buildTypes {
+        release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-***REMOVED***
-***REMOVED***
-    compileOptions ***REMOVED***
+        }
+    }
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-***REMOVED***
-    kotlinOptions ***REMOVED***
+    }
+    kotlinOptions {
         jvmTarget = '1.8'
-***REMOVED***
+    }
 
-    viewBinding ***REMOVED***
+    viewBinding {
         enabled true
-***REMOVED***
-***REMOVED***
+    }
+}
 
-dependencies ***REMOVED***
+dependencies {
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -56,4 +56,8 @@ dependencies ***REMOVED***
 
     // firebase dependencies
     implementation platform('com.google.firebase:firebase-bom:32.5.0')
-***REMOVED***
+
+    // realtime database dependencies
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-database")
+}

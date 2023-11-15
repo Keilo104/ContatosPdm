@@ -1,6 +1,6 @@
 package br.edu.scl.ifsp.ads.contatospdm.model
 
-interface ContactDao ***REMOVED***
+interface ContactDao {
     fun createContact(contact: Contact)
 
     fun retrieveContact(id: Int): Contact?
@@ -10,4 +10,4 @@ interface ContactDao ***REMOVED***
     fun updateContact(contact: Contact): Int
 
     fun deleteContact(contact: Contact): Int
-***REMOVED***
+}

@@ -23,43 +23,60 @@ import br.edu.scl.ifsp.ads.contatospdm.model.Constant.EXTRA_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Constant.VIEW_CONTACT
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
 
-class MainActivity : AppCompatActivity() ***REMOVED***
-    private val amb: ActivityMainBinding by lazy ***REMOVED***
+class MainActivity : AppCompatActivity() {
+    private val amb: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
-***REMOVED***
+    }
     // Data Source
     private val contactList: MutableList<Contact> = mutableListOf()
 
     // Controller
-    private val contactController: ContactController by lazy ***REMOVED***
+    private val contactController: ContactController by lazy {
         ContactController(this)
-***REMOVED***
+    }
 
     // Adapter
-    private val contactAdapter: ContactAdapter by lazy ***REMOVED***
+    private val contactAdapter: ContactAdapter by lazy {
         ContactAdapter(
             this,
             contactList
         )
-***REMOVED***
+    }
+
+    companion object {
+        const val GET_CONTACTS_MSG = 1
+        const val GET_CONTACTS_INTERVAL = 2000L
+    }
 
     // Handler
-    val updateContactListHandler = object: Handler(Looper.getMainLooper()) ***REMOVED***
-        override fun handleMessage(msg: Message) ***REMOVED***
+    val updateContactListHandler = object: Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            msg.data.getParcelableArray(CONTACT_ARRAY)?.also ***REMOVED*** contactArray ->
-                contactList.clear()
-                contactArray.forEach ***REMOVED***
-                    contactList.add(it as Contact)
-        ***REMOVED***
-                contactAdapter.notifyDataSetChanged()
-    ***REMOVED***
-***REMOVED***
-***REMOVED***
+
+            // Busca contatos ou atualiza a lista de acordo com o tipo da mensagem
+            if (msg.what == GET_CONTACTS_MSG) {
+                // Busca os contatos de acordo com o intervalo e agenda um nova busca
+                contactController.getContacts()
+
+                sendMessageDelayed(
+                    obtainMessage().apply { what = GET_CONTACTS_MSG },
+                    GET_CONTACTS_INTERVAL
+                )
+            } else {
+                msg.data.getParcelableArray(CONTACT_ARRAY)?.also { contactArray ->
+                    contactList.clear()
+                    contactArray.forEach {
+                        contactList.add(it as Contact)
+                    }
+                    contactAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
 
     private lateinit var carl: ActivityResultLauncher<Intent>
 
-    override fun onCreate(savedInstanceState: Bundle?) ***REMOVED***
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(amb.root)
         setSupportActionBar(amb.toolbarIn.toolbar)
@@ -69,83 +86,87 @@ class MainActivity : AppCompatActivity() ***REMOVED***
 
         carl = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
-        ) ***REMOVED*** result ->
-            if (result.resultCode == RESULT_OK) ***REMOVED***
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
                 val contact = result.data?.getParcelableExtra<Contact>(EXTRA_CONTACT)
-                contact?.let ***REMOVED*** _contact ->
-                    if(contactList.any ***REMOVED*** it.id == contact.id ***REMOVED***) ***REMOVED***
+                contact?.let { _contact ->
+                    if(contactList.any { it.id == contact.id }) {
                         contactController.editContact(_contact)
-            ***REMOVED*** else ***REMOVED***
+                    } else {
                         contactController.insertContact(_contact)
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+                    }
+                }
+            }
+        }
 
-        amb.contatosLv.setOnItemClickListener ***REMOVED*** _, _, position, _ ->
+        amb.contatosLv.setOnItemClickListener { _, _, position, _ ->
             val contact = contactList[position]
             val viewContactIntent = Intent(this, ContactActivity::class.java)
                 .putExtra(EXTRA_CONTACT, contact)
                 .putExtra(VIEW_CONTACT, true)
 
             startActivity(viewContactIntent)
-***REMOVED***
+        }
 
         registerForContextMenu(amb.contatosLv)
-        contactController.getContacts()
-***REMOVED***
+        updateContactListHandler.apply {
+            sendMessage(
+                obtainMessage().apply { what = GET_CONTACTS_MSG }
+            )
+        }
+    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean ***REMOVED***
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
-***REMOVED***
+    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean ***REMOVED***
-        return when(item.itemId) ***REMOVED***
-            R.id.addContactMi -> ***REMOVED***
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.addContactMi -> {
                 carl.launch(Intent(this, ContactActivity::class.java))
                 true
-    ***REMOVED***
+            }
             else -> false
-***REMOVED***
-***REMOVED***
+        }
+    }
 
     override fun onCreateContextMenu(
         menu: ContextMenu?,
         v: View?,
         menuInfo: ContextMenu.ContextMenuInfo?
-    ) ***REMOVED***
+    ) {
         menuInflater.inflate(R.menu.context_menu_main, menu)
-***REMOVED***
+    }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean ***REMOVED***
+    override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
         val contact = contactList[position]
 
-        return when (item.itemId)***REMOVED***
-            R.id.removeContactMi -> ***REMOVED***
+        return when (item.itemId){
+            R.id.removeContactMi -> {
                 contactController.removeContact(contact)
                 Toast.makeText(this,"Removido", Toast.LENGTH_SHORT).show()
                 true
-    ***REMOVED***
-            R.id.editContactMo -> ***REMOVED***
+            }
+            R.id.editContactMo -> {
                 val _contact = contactList[position]
                 val editContactIntent = Intent(this, ContactActivity::class.java)
                 editContactIntent.putExtra(EXTRA_CONTACT, _contact)
                 carl.launch(editContactIntent)
                 true
-    ***REMOVED***
-            else -> ***REMOVED***true***REMOVED***
-***REMOVED***
-***REMOVED***
+            }
+            else -> {true}
+        }
+    }
 
-    override fun onDestroy() ***REMOVED***
+    override fun onDestroy() {
         super.onDestroy()
         unregisterForContextMenu(amb.contatosLv)
-***REMOVED***
+    }
 
-    private fun fillContacts() ***REMOVED***
-        for (i in 1..50) ***REMOVED***
+    private fun fillContacts() {
+        for (i in 1..50) {
             contactList.add(
                 Contact(
                     i,
@@ -155,6 +176,6 @@ class MainActivity : AppCompatActivity() ***REMOVED***
                     "Email $i"
                 )
             )
-***REMOVED***
-***REMOVED***
-***REMOVED***
+        }
+    }
+}

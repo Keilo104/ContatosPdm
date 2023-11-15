@@ -9,8 +9,8 @@ import android.util.Log
 import br.edu.scl.ifsp.ads.contatospdm.R
 import java.sql.SQLException
 
-class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
-    companion object Constant ***REMOVED***
+class ContactDaoSqlite(context: Context): ContactDao {
+    companion object Constant {
         private const val CONTACT_DATABASE_FILE = "incredibly_cool_database_TRUST"
         private const val CONTACT_TABLE = "contact"
         private const val ID_COLUMN = "id"
@@ -26,32 +26,32 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
                     "$PHONE_COLUMN TEXT NOT NULL, " +
                     "$EMAIL_COLUMN TEXT NOT NULL " +
                     ");"
-***REMOVED***
+    }
 
     private val contactSqliteDatabase: SQLiteDatabase
 
-    init ***REMOVED***
+    init {
         contactSqliteDatabase =
             context.openOrCreateDatabase(CONTACT_DATABASE_FILE, MODE_PRIVATE, null)
 
-        try ***REMOVED***
+        try {
             contactSqliteDatabase.execSQL(CREATE_CONTACT_TABLE_STATEMENT)
 
-***REMOVED*** catch(se: SQLException) ***REMOVED***
+        } catch(se: SQLException) {
             Log.e(context.getString(R.string.app_name), se.message.toString())
-***REMOVED***
-***REMOVED***
+        }
+    }
 
-    override fun createContact(contact: Contact) ***REMOVED***
+    override fun createContact(contact: Contact) {
         contactSqliteDatabase.insert(
             CONTACT_TABLE,
             null,
             contact.toContentValues()
         )
-***REMOVED***
+    }
 
 
-    override fun retrieveContact(id: Int): Contact? ***REMOVED***
+    override fun retrieveContact(id: Int): Contact? {
         val cursor = contactSqliteDatabase.rawQuery(
             "SELECT * FROM $CONTACT_TABLE WHERE $ID_COLUMN = ?",
             arrayOf(id.toString())
@@ -60,9 +60,9 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
         val contact = if(cursor.moveToFirst()) cursor.rowToContact() else null
         cursor.close()
         return contact
-***REMOVED***
+    }
 
-    override fun retrieveContacts(): MutableList<Contact> ***REMOVED***
+    override fun retrieveContacts(): MutableList<Contact> {
         val contactList = mutableListOf<Contact>()
 
         val cursor = contactSqliteDatabase.rawQuery(
@@ -70,13 +70,13 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
             null
         )
 
-        while (cursor.moveToNext()) ***REMOVED***
+        while (cursor.moveToNext()) {
             contactList.add(cursor.rowToContact())
-***REMOVED***
+        }
         cursor.close()
 
         return contactList
-***REMOVED***
+    }
 
     override fun updateContact(contact: Contact): Int = contactSqliteDatabase.update(
         CONTACT_TABLE,
@@ -99,11 +99,11 @@ class ContactDaoSqlite(context: Context): ContactDao ***REMOVED***
         getString(getColumnIndexOrThrow(EMAIL_COLUMN))
     )
 
-    private fun Contact.toContentValues(): ContentValues = with(ContentValues()) ***REMOVED***
+    private fun Contact.toContentValues(): ContentValues = with(ContentValues()) {
         put(NAME_COLUMN, name)
         put(ADDRESS_COLUMN, address)
         put(PHONE_COLUMN, phone)
         put(EMAIL_COLUMN, email)
         this
-***REMOVED***
-***REMOVED***
+    }
+}

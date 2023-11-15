@@ -12,13 +12,13 @@ import br.edu.scl.ifsp.ads.contatospdm.databinding.TileContactBinding
 import br.edu.scl.ifsp.ads.contatospdm.model.Contact
 
 class ContactAdapter(context: Context, private val contactList: MutableList<Contact>):
-ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) ***REMOVED***
+ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View ***REMOVED***
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val contact = contactList[position]
 
         var contactTileView = convertView
-        if(contactTileView == null) ***REMOVED***
+        if(contactTileView == null) {
             val tcb = TileContactBinding.inflate(
                 context.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater,
                 parent,
@@ -29,7 +29,7 @@ ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) ***REMOVED***
 
             val tileContactHolder = TileContactHolder(tcb.nameTv, tcb.emailTv)
             contactTileView.tag = tileContactHolder
-***REMOVED***
+        }
 
         val holder = contactTileView.tag as TileContactHolder
         holder.nameTv.text = contact.name
@@ -40,7 +40,7 @@ ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) ***REMOVED***
         tcb?.emailTv?.text = contact.email
          */
         return contactTileView
-***REMOVED***
+    }
 
     private class TileContactHolder(val nameTv: TextView, val emailTv: TextView)
-***REMOVED***
+}

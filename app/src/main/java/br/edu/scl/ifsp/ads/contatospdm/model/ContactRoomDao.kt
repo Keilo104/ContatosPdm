@@ -7,14 +7,14 @@ import androidx.room.Query
 import androidx.room.Update
 
 @Dao
-interface ContactRoomDao: ContactDao ***REMOVED***
+interface ContactRoomDao: ContactDao {
 
-    companion object ***REMOVED***
+    companion object {
         const val CONTACT_DATABASE_FILE = "contacts_room"
         private const val CONTACT_TABLE = "contact"
         private const val ID_COLUMN = "id"
         private const val NAME_COLUMN = "name"
-***REMOVED***
+    }
 
     @Insert
     override fun createContact(contact: Contact)
@@ -31,4 +31,4 @@ interface ContactRoomDao: ContactDao ***REMOVED***
     @Delete
     override fun deleteContact(contact: Contact): Int
 
-***REMOVED***
+}
