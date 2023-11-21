@@ -13,19 +13,17 @@ import br.edu.scl.ifsp.ads.contatospdm.view.MainActivity
 
 class ContactController(private val mainActivity: MainActivity) {
     private val contactDaoImpl: ContactDao by lazy {
-        /* SqlLite DAO
+        // SqlLite DAO
         ContactDaoSqlite(mainActivity)
-        */
 
-        /* Room DAO
+        // Room DAO
         Room.databaseBuilder(
             mainActivity,
             ContactRoomDaoDatabase::class.java,
             CONTACT_DATABASE_FILE
         ).build().getContactRoomDao()
-        */
 
-        /* Realtime Database Firebase DAO */
+        // Realtime Database Firebase DAO
         ContactDaoRtDbFb()
     }
 
